@@ -100,7 +100,10 @@ export default class LinkedList {
    * @param {function} [findParams.callback]
    * @return {LinkedListNode}
    */
-  find({ value = undefined, callback = undefined }) {
+  find({
+    value = undefined,
+    callback = undefined
+  }) {
     if (!this.head) {
       return null;
     }
@@ -139,7 +142,6 @@ export default class LinkedList {
     }
 
     // If there are many nodes in linked list...
-
     // Rewind to the last node and delete "next" link for the node before the last one.
     let currentNode = this.head;
     while (currentNode.next) {
