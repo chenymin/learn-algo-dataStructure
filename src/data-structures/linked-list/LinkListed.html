@@ -95,7 +95,6 @@
       reverseList() {
         const root = new Node('head')
         let currentNode = this.head.next
-        debugger
         while (currentNode !== null) {
           const next = currentNode.next
           currentNode.next = root.next

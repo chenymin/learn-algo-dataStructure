@@ -209,4 +209,24 @@ describe('LinkedList', () => {
     expect(node.value.customValue).toBe('test2');
     expect(linkedList.find({ value: 2, customValue: 'test5' })).toBeNull();
   });
+  it('list reverseList', () => {
+    const linkedList = new LinkedList();
+    linkedList.append(1);
+    linkedList.append(2);
+    linkedList.append(3);
+    linkedList.append(4);
+    expect(linkedList.toString()).toBe('1,2,3,4');
+    linkedList.reverseList();
+    expect(linkedList.toString()).toBe('4,3,2,1');
+    expect(linkedList.tail.value).toBe(1);
+    expect(linkedList.head.value).toBe(4);
+    linkedList.reverseList();
+    expect(linkedList.toString()).toBe('1,2,3,4');
+    expect(linkedList.tail.next).toBeNull();
+    linkedList.delete(3);
+    linkedList.reverseList();
+    expect(linkedList.toString()).toBe('4,2,1');
+    expect(linkedList.tail.value).toBe(1);
+    expect(linkedList.tail.next).toBeNull();
+  });
 });

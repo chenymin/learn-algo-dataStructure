@@ -178,6 +178,25 @@ export default class LinkedList {
   }
 
   /**
+   * 尾插法
+   * 链表反转
+   * @return {LinkedListNode[]}
+   */
+  reverseList() {
+    const root = new LinkedListNode('');
+    let currentNode = this.head;
+    while (currentNode !== null) {
+      const nextNode = currentNode.next;
+      currentNode.next = root.next;
+      root.next = currentNode;
+      currentNode = nextNode;
+    }
+    this.tail = this.head;
+    this.tail.next = null;
+    this.head = root.next;
+  }
+
+  /**
    * @return {LinkedListNode[]}
    */
   toArray() {
