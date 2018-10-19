@@ -11,6 +11,10 @@
     "class-methods-use-this": "off",
     "arrow-body-style": "off",
     "no-loop-func": "off",
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "comma-dangle": [
+      "error",
+      "never"
+    ]
   }
 }
