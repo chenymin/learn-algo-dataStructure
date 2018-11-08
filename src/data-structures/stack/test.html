@@ -1,0 +1,39 @@
+<html>
+  <head></head>
+  <script>
+    const isStrictBalanced = (str) => {
+      const map = new Map([
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+      ])
+      let stack = [], keys = [...map.keys()], values = [...map.values()];
+      for(let i = 0 ; i < str.length; ++i){
+        let node = str[i]
+        if (map.has(node)){
+          if (stack.length){
+            let arr = [node, [...stack].pop()]
+              .map(el => keys.indexOf(el))
+
+            if (arr[0] < arr[1]){
+              return false
+            }
+          }
+          stack.push(node)
+        }
+        else if (values.includes(node)){
+          let needKey = [...map.entries()].filter((el) => {
+            console.log(el)
+            return el[1]===node
+          }).pop().shift()
+          if ([...stack].pop() !== needKey){
+            return false
+          }
+          stack.pop()
+        }
+      }
+      return stack.length === 0
+    }
+    console.log(isStrictBalanced('{()[]}'))
+  </script>
+</html>
