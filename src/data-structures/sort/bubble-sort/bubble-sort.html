@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <script>
+    class Comparator {
+      /**
+       * @param {function(a: *, b: *)} [compareFunction]
+       */
+      constructor(compareFunction) {
+        this.compare = compareFunction || Comparator.defaultCompareFunction;
+      }
+
+      /**
+       * @param {(string|number)} a
+       * @param {(string|number)} b
+       * @returns {number}
+       */
+      static defaultCompareFunction(a, b) {
+        if (a === b) {
+          return 0;
+        }
+
+        return a < b ? -1 : 1;
+      }
+
+      equal(a, b) {
+        return this.compare(a, b) === 0;
+      }
+
+      lessThan(a, b) {
+        return this.compare(a, b) < 0;
+      }
+
+      greaterThan(a, b) {
+        return this.compare(a, b) > 0;
+      }
+
+      lessThanOrEqual(a, b) {
+        return this.lessThan(a, b) || this.equal(a, b);
+      }
+
+      greaterThanOrEqual(a, b) {
+        return this.greaterThan(a, b) || this.equal(a, b);
+      }
+
+      reverse() {
+        const compareOriginal = this.compare;
+        this.compare = (a, b) => compareOriginal(b, a);
+      }
+    }
+
+    class Sort {
+      constructor(originalCallbacks) {
+        this.callbacks = Sort.initSortingCallbacks(originalCallbacks);
+        this.comparator = new Comparator(this.callbacks.compareCallback);
+      }
+
+      /**
+       * @param {SorterCallbacks} originalCallbacks
+       * @returns {SorterCallbacks}
+       */
+      static initSortingCallbacks(originalCallbacks) {
+        const callbacks = originalCallbacks || {};
+        const stubCallback = () => {};
+
+        callbacks.compareCallback = callbacks.compareCallback || undefined;
+        callbacks.visitingCallback = callbacks.visitingCallback || stubCallback;
+
+        return callbacks;
+      }
+
+      sort() {
+        throw new Error('sort method must be implemented');
+      }
+    }
+
+    class BubbleSort extends Sort {
+      sort(originalArray) {
+        // Flag that holds info about whether the swap has occur or not.
+        let swapped = false;
+        // Clone original array to prevent its modification.
+        const array = [...originalArray];
+
+        for (let i = 1; i < array.length; i += 1) {
+          swapped = false;
+
+          // Call visiting callback.
+          this.callbacks.visitingCallback(array[i]);
+
+          for (let j = 0; j < array.length - i; j += 1) {
+            // Call visiting callback.
+            this.callbacks.visitingCallback(array[j]);
+
+            // Swap elements if they are in wrong order.
+            if (this.comparator.lessThan(array[j + 1], array[j])) {
+              [array[j], array[j + 1]] = [array[j + 1], array[j]];
+
+              // Register the swap.
+              swapped = true;
+            }
+          }
+
+          // If there were no swaps then array is already sorted and there is
+          // no need to proceed.
+          if (!swapped) {
+            return array;
+          }
+        }
+
+        return array;
+      }
+    }
+
+    // const bubbleSort = new BubbleSort();
+    // console.log(bubbleSort.sort([3, 5, 4, 1, 2, 6]))
+
+    class InsertionSort extends Sort {
+      sort(originalArray) {
+        const array = [...originalArray];
+
+        for (let i = 0; i < array.length; i++) {
+          let currentIndex = i;
+          while (array[currentIndex - 1] !== undefined
+          && this.comparator.lessThan(array[currentIndex], array[currentIndex - 1])) {
+            const temp = array[currentIndex - 1];
+            array[currentIndex - 1] = array[currentIndex];
+            array[currentIndex] = temp;
+
+            // Shift current index left.
+            currentIndex -= 1;
+          }
+        }
+        return array;
+      }
+    }
+
+    const insertionSort = new InsertionSort();
+    // console.log(insertionSort.sort([3, 5, 4, 1, 2, 6]))
+
+
+    Array.prototype.insertion_sort = function()
+    {
+      var i,j;
+      for(i = 1;i < this.length; i++){
+        for(j = 0;j<i;j++){
+          if(this[j]>this[i]){
+            this.splice(j,0,this[i]);
+            this.splice(i+1,1);
+            break;
+          }
+        }
+      }
+      return this;
+    };
+    // console.log([3, 5, 4, 1, 2, 6].insertion_sort())
+
+    class SelectSort {
+      sort(originalArray) {
+        const array = [...originalArray];
+
+        for (let i = 0; i < array.length; i++) {
+          let minIndex = i;
+          for (let j = i + 1; j < array.length; j++) {
+            if (array[minIndex] > array[j]) {
+              minIndex = j;
+            }
+          }
+          if (minIndex !== i) {
+            [array[i], array[minIndex]] = [array[minIndex], array[i]];
+          }
+        }
+        return array;
+      }
+    }
+
+    const selectSort = new SelectSort();
+    console.log(selectSort.sort([3, 5, 4, 1, 2, 6]));
+  </script>
+</body>
+</html>
