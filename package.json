@@ -7,7 +7,8 @@
     "lint": "eslint ./src/*",
     "test": "jest",
     "ci": "npm run lint && npm run test -- --coverage",
-    "codecov": "codecov"
+    "codecov": "codecov",
+    "dev": "parcel src/data-structures/test.html"
   },
   "pre-commit": [
     "lint",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/jest": "^23.1.4",
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "codecov": "^3.0.2",
     "eslint": "^4.19.1",
@@ -47,6 +49,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint-plugin-react": "^7.10.0",
     "jest": "^23.3.0",
+    "parcel-bundler": "^1.11.0",
     "pre-commit": "^1.2.2"
   },
   "dependencies": {}
