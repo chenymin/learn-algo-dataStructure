@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+  <script>
+    function bubbleSort(array) {
+      for (let i = 0; i < array.length; i++) {
+        let isSwapped = false
+        for (let j = 0; j < array.length - i; j++) {
+          if (array[j] > array[j + 1]) {
+            let temp = array[j + 1]
+            array[j + 1] = array[j]
+            array[j] = temp
+            isSwapped = true
+          }
+        }
+        if (!isSwapped) {
+          return array
+        }
+      }
+      return array
+    }
+
+    // console.log(bubbleSort([5, 2, 1, 3, 4, 7, 9, 8]))
+
+    function selectSort(array) {
+      for (let i = 0; i < array.length; i++) {
+        let minIndex = i
+        for (let j = i + 1; j < array.length; j++) {
+          if (array[j] < array[minIndex]) {
+            minIndex = j
+          }
+        }
+        if (i !== minIndex) {
+          [array[i], array[minIndex]] = [array[minIndex], array[i]];
+        }
+      }
+      return array
+    }
+    // console.log(selectSort([5, 2, 1, 3, 4, 7, 9, 8]))
+
+    function insertSort(array) {
+      for (let i = 0; i < array.length; i++) {
+        let currentIndex = i;
+        while (array[currentIndex - 1] && array[currentIndex] < array[currentIndex - 1]) {
+          [array[currentIndex], array[currentIndex - 1]] = [array[currentIndex - 1], array[currentIndex]]
+          currentIndex -= 1
+        }
+      }
+      return array
+    }
+    // console.log(insertSort([5, 2, 1, 3, 4, 7, 9, 8]))
+
+    function shellSort (array) {
+      let gap = Math.floor(array.length / 2)
+      while (gap > 0) {
+        for (let i = gap; i < array.length; i++) {
+          let temp = array[i]
+          let j
+          for (j = i; j >= gap && temp < array[j - gap] ; j -= gap) {
+            array[j] = array[j - gap]
+          }
+          array[j] = temp
+        }
+        gap = Math.floor(gap / 2)
+      }
+      return array
+    }
+    // console.log(shellSort([5, 2, 1, 3, 4, 7, 9, 8, 99, 77, 11, 16]))
+
+    function mergeSort(array) {
+      if (array.length <= 1) {
+        return array
+      }
+      let middleIndex = Math.floor(array.length / 2)
+      const leftArray = array.slice(0, middleIndex)
+      const rightArray = array.slice(middleIndex, array.length)
+
+      const leftSortArray = mergeSort(leftArray)
+      const rightSortArray = mergeSort(rightArray)
+
+      return mergeArray(leftSortArray, rightSortArray)
+    }
+
+    function mergeArray(leftSortArray, rightSortArray) {
+      let sortArray = []
+      while (leftSortArray.length > 0 && rightSortArray.length > 0) {
+        let minValue = 0
+        if (leftSortArray[0] <= rightSortArray[0]) {
+          minValue = leftSortArray.shift()
+        } else {
+          minValue = rightSortArray.shift()
+        }
+        sortArray.push(minValue)
+      };
+
+      if (leftSortArray.length) {
+        sortArray = sortArray.concat(leftSortArray)
+      }
+
+      if (rightSortArray.length) {
+        sortArray = sortArray.concat(rightSortArray)
+      }
+      return sortArray
+    }
+    // console.log(mergeSort([9, 2, 8, 7, 6, 3, 10, 1, 12]))
+    
+    function flatten(array) {
+      return array.reduce(function (acc, item) {
+        return acc.concat(Array.isArray(item) ? flatten(item) : item)
+      }, [])
+    }
+
+//     console.log(flatten([1, [2, 3, [4, 5], 6], 7, 8]))
+
+    function flattenTwo (list) {
+        const array = [];
+        function flattenInnter (list) {
+            for (let i = 0; i < list.length; i++) {
+                Array.isArray(list[i]) ? flattenInnter(list[i]) : array.push(list[i])
+            }
+        }
+        flattenInnter(list)
+        return array
+    }
+    // console.log(flattenTwo([1, [2, 3, [4, 5], 6], 7, 8]))
+
+    function quickSortInPlace (array, lowInputIndex = 0, highInputIndex = array.length - 1) {
+      const partitionArray = (lowIndex, highIndex) => {
+        const swap = (leftIndex, rightIndex) => {
+          const temp = array[leftIndex];
+          array[leftIndex] = array[rightIndex];
+          array[rightIndex] = temp;
+        };
+
+        const pivot = array[highIndex]
+        let partitionIndex = lowIndex;
+        debugger
+        for (let currentIndex = lowIndex; currentIndex < highIndex; currentIndex++ ) {
+          if (array[currentIndex] < pivot ) {
+            // 交换
+            swap(partitionIndex, currentIndex)
+            partitionIndex += 1
+          }
+        }
+        swap(partitionIndex, highIndex)
+        return partitionIndex
+      }
+      if (lowInputIndex < highInputIndex) {
+        let partitionIndex = partitionArray(lowInputIndex, highInputIndex)
+        quickSortInPlace(array, lowInputIndex, partitionIndex - 1)
+        quickSortInPlace(array, partitionIndex + 1, highInputIndex)
+      }
+      return array
+    }
+    // console.log(quickSortInPlace([2, 3, 6, 9, 0, 99, 88, 1, 5, 19, 20, 25, 46, 89, 33]))
+
+    function quickSort(array, lowInputIndex = 0, heighInputIndex = array.length - 1) {
+      const partition = (lowIndex, heighIndex) => {
+        const swap = (leftIndex, rightIndex) => {
+          const temp = array[leftIndex]
+          array[leftIndex] = array[rightIndex]
+          array[rightIndex] = temp
+        }
+        const pivot = array[heighIndex]
+        let partitionIndex = lowIndex
+        for (let currentIndex = lowIndex; currentIndex < heighIndex; currentIndex++) {
+          if (array[currentIndex] < pivot) {
+            swap(partitionIndex, currentIndex)
+            partitionIndex++
+          }
+        }
+        swap(partitionIndex, heighIndex)
+        return partitionIndex
+      }
+      if (lowInputIndex < heighInputIndex) {
+        const partitionIndex = partition(lowInputIndex, heighInputIndex)
+        quickSort(array, lowInputIndex, partitionIndex - 1)
+        quickSort(array, partitionIndex + 1, heighInputIndex)
+      }
+      return array
+    }
+    console.log(quickSort([4, 2, 5, 12, 3]))
+  </script>
+</body>
+</html>
