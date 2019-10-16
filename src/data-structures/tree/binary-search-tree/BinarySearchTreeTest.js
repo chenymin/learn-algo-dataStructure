@@ -47,9 +47,13 @@ myBst.insert(55);
 // myBst.delete(55)
 //
 // console.log(myBst.find(58).left);
+// myBst.delete(13);
+// console.log(myBst.find(18));
+// myBst.delete(18);
+// console.log(myBst.find(16));
+// console.log(myBst.find(19));
+// console.log(myBst.find(25));
 
-console.log(myBst.find(18));
-myBst.delete(18);
-console.log(myBst.find(16));
-console.log(myBst.find(19));
-console.log(myBst.find(25));
+// console.log(myBst.inOrderUnRecur(myBst.root, 2));
+
+console.log(myBst.preOrderUnRecur(myBst.root));

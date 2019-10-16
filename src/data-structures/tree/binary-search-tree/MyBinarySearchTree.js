@@ -92,4 +92,42 @@ export default class MyBst {
       parentNode.right = child;
     }
   }
+  // 先序遍历
+  preOrderUnRecur(node) {
+    if (!node) {
+      throw new Error('Empty Tree');
+    }
+    const stack = [];
+    stack.push(node);
+    while (stack.length !== 0) {
+      node = stack.pop();
+      console.log(node.value);
+      if (node.right) stack.push(node.right);
+      if (node.left) stack.push(node.left);
+    }
+  }
+  // 中序遍历
+  inOrderUnRecur(node, k) {
+    if (!node) {
+      throw new Error('Empty Tree');
+    }
+    const stack = [];
+    let currentIndex = -1;
+    while (stack.length !== 0 || node) {
+      if (node) {
+        stack.push(node)
+        node = node.left;
+      } else {
+        node = stack.pop();
+        // console.log(node.value);
+        currentIndex += 1;
+        if (k - 1 === currentIndex) {
+          console.log(`第k${node.value}`);
+        }
+        node = node.right;
+      }
+    }
+    return stack;
+  }
+
 }
