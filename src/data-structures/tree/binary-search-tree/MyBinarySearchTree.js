@@ -48,6 +48,15 @@ export default class MyBst {
     }
     return null;
   }
+
+  /**
+   * 1第一种情况是，如果要删除的节点没有子节点，我们只需要直接将父节点中，指向要删除节点的指针置为 null
+   * 2如果要删除的节点只有一个子节点（只有左子节点或者右子节点），我们只需要更新父节点中，指向要删除节点的指针，
+   * 3如果要删除的节点有两个子节点，这就比较复杂了。我们需要找到这个节点的右子树中的最小节点，把它替换到要删除的节点上。
+   * 然后再删除掉这个最小节点，因为最小节点肯定没有左子节点（如果有左子结点，那就不是最小节点了），所以，我们可以应用上面两条规则
+   * 来删除这个最小节点。
+   *
+   * */
   delete(value) {
     let node = this.root;
     let parentNode;
@@ -63,6 +72,7 @@ export default class MyBst {
       return null;
     }
 
+    // 要删除的节点有两个子节点
     if (node.left !== null && node.right !== null) {
       let minNode = node.right;
       let minParentNode = node;
