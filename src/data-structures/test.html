@@ -1,14 +1,964 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>测试</title>
+  <meta charset="UTF-8">
+  <title>测试</title>
 </head>
+
 <body>
-<!--<script src="./sort/merge-sort/MergeSortTest.js"></script>-->
-<!--<script src="sort/quick-sort/QuickSortTest.js"></script>-->
-<!--<script src="./stack/__test__/fourCalculationTest.js"></script>-->
-<!--<script src="./tree/binary-search-tree/BinarySearchTreeTest.js"></script>-->
-<script src="../algo/permutate/permutateWithoutRepetitionsTest.js"></script>
+  <!--<script src="./sort/merge-sort/MergeSortTest.js"></script>-->
+  <!--<script src="sort/quick-sort/QuickSortTest.js"></script>-->
+  <!--<script src="./stack/__test__/fourCalculationTest.js"></script>-->
+  <!--<script src="./tree/binary-search-tree/BinarySearchTreeTest.js"></script>-->
+  <!-- <script src="../algo/permutate/permutateWithoutRepetitionsTest.js"></script> -->
+  <script>
+    // var removeDuplicates = function(nums) {
+    //     const hasObj = {}
+    //     const arr = []
+    //     for (let i = 0; i < nums.length; i++) {
+    //         if (!hasObj[nums[i]]) {
+    //             hasObj[nums[i]] = nums[i]
+    //             console.log(hasObj)
+    //             arr.push(nums[i])
+    //         }
+    //     }
+    //     return arr
+    // };
+    // var removeDuplicates = function(nums) {
+    //     if (nums.length == 0) return 0;
+    //     var i = 0;
+    //     for (let j = 1; j < nums.length; j++) {
+    //         if (nums[j] != nums[i]) {
+    //             i++;
+    //             nums[i] = nums[j];
+    //         }
+    //     }
+    //     return i + 1;
+    // };
+    // console.log(removeDuplicates([1, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 7, 8]))
+
+
+    /**
+     * @param {number[]} nums
+     * @return {number[][]}
+     */
+    var threeSum = function (nums) {
+      let res = []
+      let hash = {}
+      for (let i = 0; i < nums.length - 2; i++) { // 每个人
+        for (let j = i + 1; j < nums.length - 1; j++) { // 依次拉上其他每个人
+          if (hash[nums[j]] !== undefined) { // 已经有合适自己的两人组
+            res.push([nums[j]].concat(hash[nums[j]]))
+            hash[nums[j]] = undefined
+          } else { // 没有合适自己的两人组
+            let mark = 0 - nums[i] - nums[j]
+            hash[mark] = [nums[i], nums[j]]
+          }
+        }
+      }
+      return res
+    };
+    // console.log(threeSum([-1, 0, 1, 2, -1, -4]))
+
+
+    var reverse = function (x) {
+      const maxVal = Math.pow(2, 31) - 1;
+      const minVal = Math.pow(-2, 31);
+      if (x > maxVal || x < minVal) return 0
+      var str = ''
+      var num = Math.abs(x)
+      while (num >= 1) {
+        str += num % 10
+        num = Math.floor(num / 10)
+      }
+      if (parselet(num) > maxVal) {
+        return 0
+      }
+      return x >= 0 ? str : '-' + str
+    };
+    // console.log(reverse(1534236469))
+
+
+    function mergeArray(arr1, arr2) {
+      let sortedArray = [];
+      while (arr1.length && arr2.length) {
+        let minimumElement = null;
+        if (arr1[0] <= arr2[0]) {
+          minimumElement = arr1.shift()
+        } else {
+          minimumElement = arr2.shift()
+        }
+        sortedArray.push(minimumElement)
+      }
+      if (arr1.length) {
+        sortedArray = sortedArray.concat(arr1)
+      }
+      if (arr2.length) {
+        sortedArray = sortedArray.concat(arr2)
+      }
+      return sortedArray
+    }
+
+    // console.log(mergeArray([1, 2, 3], [2, 5, 6]))
+
+
+    /**
+     * @param {number[]} nums1
+     * @param {number} m
+     * @param {number[]} nums2
+     * @param {number} n
+     * @return {void} Do not return anything, modify nums1 in-place instead.
+     */
+    var merge = function (nums1, m, nums2, n) {
+      let sortedArray = [];
+      nums1 = nums1.slice(0, m)
+      console.log(nums1)
+      nums2 = nums2.slice(0, n)
+      console.log(nums2)
+      while (nums1.length && nums2.length) {
+        let minimumElement = null;
+        if (nums1[0] <= nums2[0]) {
+          minimumElement = nums1.shift()
+        } else {
+          minimumElement = nums2.shift()
+        }
+        sortedArray.push(minimumElement)
+      }
+      if (nums1.length) {
+        sortedArray = sortedArray.concat(nums1)
+      }
+      if (nums2.length) {
+        sortedArray = sortedArray.concat(nums2)
+      }
+      return sortedArray
+    };
+    // console.log(merge([1,2,3,0,0,0], 3 ,[2,5,6], 3))
+
+    /**
+     * 雨水收集问题动态规划
+     */
+    function trap(height) {
+      let ans = 0
+      let length = height.length
+      let leftMax = []
+      let rightMax = []
+      leftMax[0] = height[0]
+      for (let i = 1; i < length; i++) {
+        leftMax[i] = Math.max(height[i], leftMax[i - 1])
+      }
+
+      rightMax[length - 1] = height[length - 1]
+      for (let i = length - 2; i > 0; i--) {
+        rightMax[i] = Math.max(height[i], rightMax[i + 1])
+      }
+
+      for (let i = 1; i < length - 1; i++) {
+        ans += Math.min(leftMax[i], rightMax[i] - height[i])
+      }
+      return ans
+    }
+
+    /**
+     * 雨水收集问题栈的实现
+     */
+    function trapStack(height) {
+      let ans = 0;
+      let current = 0;
+      const stack = [];
+      while (current < height.length) {
+        while (stack.length > 0 && height[current] > height[stack[stack.length - 1]]) {
+          let top = stack[stack.length - 1]
+          stack.pop()
+          if (stack.length === 0) {
+            break
+          }
+          let distance = current - stack[stack.length - 1] - 1
+          let bounded_height = Math.min(height[current], height[stack[stack.length - 1]]) - height[top]
+          ans += distance * bounded_height;
+        }
+        stack.push(current++)
+      }
+      return ans
+    }
+    // console.log(trapStack([0,1,0,2,1,0,1,3,2,1,2,1]))
+
+    var isPalindrome = function (x) {
+      let originalVal = x
+      let number = 0
+      if (x < 0) {
+        return false
+      }
+      while (x !== 0) {
+        let digits = x % 10
+        number += digits * Math.pow(10, --x.toString().length)
+        x = Math.floor(x / 10)
+      }
+      return originalVal === number
+    };
+    // console.log(isPalindrome(121))
+    // console.log(isPalindrome(10))
+    // console.log(isPalindrome(-121))
+
+    // 并查集
+    class UnionFind {
+      constructor() {
+        this.parent = new Map();
+      }
+
+      // 查找元素所在集合
+      find(x) {
+        while (this.parent.has(x)) {
+          x = this.parent.get(x);
+        }
+        return x;
+      }
+
+      // 合并两个集合
+      union(p, q) {
+        const rootP = this.find(p);
+        const rootQ = this.find(q);
+        if (rootP !== rootQ) {
+          this.parent.set(this.find(p), this.find(q));
+        }
+      }
+    }
+
+    const cmp = (x, y) => {
+      if (x < y) return -1;
+      if (x > y) return 1;
+      return 0;
+    };
+
+    /**
+     * @param {string[][]} accounts
+     * @return {string[][]}
+     */
+    var accountsMerge = function (accounts) {
+      const uf = new UnionFind();
+      const map = {}; // email => name
+
+      // 步骤1:将属于同一集合的email进行“连线”
+      for (const account of accounts) {
+        for (let i = 1; i < account.length; ++i) {
+          map[account[i]] = account[0];
+          if (i < account.length - 1) {
+            uf.union(account[i], account[i + 1]);
+          }
+        }
+      }
+      // 步骤2: 将属于同一连通分量（同一用户）的所有邮箱放入对应的列表中
+      const sets = {}; // key: string; value: string[]
+      for (const email in map) {
+        const root = uf.find(email);
+        if (!sets[root]) {
+          sets[root] = [];
+        }
+        sets[root].push(email);
+      }
+
+      const res = [];
+      for (const root in sets) {
+        sets[root].sort(cmp);
+        res.push([map[root], ...sets[root]]);
+      }
+      return res;
+    };
+
+    const accounts = [
+      ["John", "johnsmith@mail.com", "john00@mail.com"],
+      ["John", "johnnybravo@mail.com"],
+      ["John", "johnsmith@mail.com", "john_newyork@mail.com"],
+      ["Mary", "mary@mail.com"]
+    ]
+    // var accountsMerge = function (accounts) {
+    //   const resultArr = []
+    //   for (let i = 0, len = accounts.length; i < len; i++) {
+    //     for (let j = 1, subLen = accounts[i].length - 1; j < subLen; j++) {
+    //       const str = accounts[i][j]
+    //       let equalIndex = accounts[i + 1].indexOf(str)
+    //       if (equalIndex > -1) {
+    //         accounts[i].push(accounts[i + 1][equalIndex])
+    //         resultArr.push(accounts[i])
+    //       }
+    //     }
+    //   }
+    //   return resultArr
+    // };
+    console.log(accountsMerge(accounts))
+
+    var removeElement = function (nums, val) {
+      let index = 0
+      for (let i = 0, len = nums.length; i < len; i++) {
+        if (nums[i] !== val) {
+          nums[index] = nums[i];
+          index++;
+        }
+      }
+      return index
+    };
+
+    // console.log(removeElement([3, 2, 2, 3], 3))
+    // console.log(removeElement([0, 1, 2, 2, 3, 0, 4, 2], 2))
+
+
+
+    var CheckPermutation = function (s1, s2) {
+      if (s1.length != s2.length) {
+        return false;
+      }
+      const arr = s1.split('')
+      let isValid = true
+      for (let i = 0, len = arr.length; i < len; i++) {
+        if (!s2.includes(arr[i])) {
+          isValid = false
+        } else {
+          isValid = true
+        }
+      }
+      return isValid
+    };
+
+    console.log(CheckPermutation("jzvthzihsvghjhbrpfhdwixmyaxjrdzfvnhpmyrbqjpdffykqgahgzpjwvouurr",
+      'hhqhxjyrghjjsmduaxppwrqkikqnfdrzjowapehtbyrgrfyprrfrebzduxvvhhu'))
+
+    var oneEditAway = function (first, second) {
+      if (Math.abs(first.length - second.length) > 1) {
+        return false
+      }
+      if (first === second) {
+        return true
+      }
+      let count = 0
+      let str = ''
+      while (count < first.length) {
+        if (second.length > first.length) {
+          if (second.charAt(count) !== first.charAt(count)) {
+            str = second.substr(0, count) + second.substr(count + 1, second.length)
+            break
+          }
+        } else {
+          if (second.indexOf(first.charAt(count)) <= -1) {
+            str = second.substr(0, count) + first[count] + second.substr(first.length === second.length ? count + 1 :
+              count, second.length)
+          }
+        }
+        count++
+      }
+      if (second.length - count === 1 && str === '') {
+        str = second.substr(0, second.length - 1)
+      }
+      return str === first
+    };
+    // console.log(oneEditAway("pale", "pfle"))
+    // console.log(oneEditAway("pale", "ple"))
+    // console.log(oneEditAway("pale", "paple"))
+    // console.log(oneEditAway("a", "a"))
+
+    var compressString = function (S) {
+      let repeatStr = S.charAt(0)
+      let count = 1
+      let strResult = ''
+      for (let i = 1, len = S.length; i < len; i++) {
+        if (repeatStr === S.charAt(i)) {
+          count++
+        } else {
+          strResult += repeatStr + count
+          repeatStr = S.charAt(i)
+          count = 1
+        }
+      }
+      strResult += repeatStr + count;
+      return strResult
+    };
+    // console.log(compressString('aabcccccaaa'))
+
+
+
+    var isValid = function (s) {
+      if (s === "") {
+        return true
+      }
+      let isMatch = false
+      const stack = []
+      const map = new Map([
+        ['(', ')'],
+        ['{', '}'],
+        ['[', ']']
+      ])
+      const keys = [...map.keys()]
+      const values = [...map.values()]
+      for (let i = 0, len = s.length; i < len; i++) {
+        let ch = s.charAt(i)
+        if (keys.includes(ch)) {
+          stack.push(s.charAt(i))
+        } else if (values.includes(ch)) {
+          let chx = stack.pop()
+          let needKey = [...map.entries()].filter((el) => {
+            return el[1] === ch
+          }).pop().shift()
+          isMatch = needKey === chx
+          if (!isMatch) {
+            break
+          }
+        }
+      }
+      return isMatch
+    };
+
+    // console.log(isValid('[])'))
+    // console.log(isValid("{{)}"))
+
+
+
+
+    /**
+     * Definition for singly-linked list.
+     * function ListNode(val) {
+     *     this.val = val;
+     *     this.next = null;
+     * }
+     */
+    /**
+     * @param {ListNode} l1
+     * @param {ListNode} l2
+     * @return {ListNode}
+     */
+    var addTwoNumbers = function (l1, l2) {
+      let l1Cun = l1
+      let l2Cun = l2
+      let carry = 0
+      const dummyHead = new ListNode(0)
+      let cur = dummyHead
+      while (l1Cun || l2Cun) {
+        let sum = l1Cun.val + l2Cun.val + carry
+        carry = Math.floor(sum / 10)
+        cur.next = new ListNode(Math.floor(sum % 10))
+        cur = cur.next
+        if (l1Cun.next) {
+          l1Cun = l1Cun.next
+        }
+        if (l2Cun.next) {
+          l2Cun = l2Cun.next
+        }
+
+      }
+
+      if (carry > 0) {
+        cur.next = new ListNode(carry)
+      }
+      return dummyHead.next
+    };
+
+    var addTwoNumbers = function (l1, l2) {
+      let dummyHead = new ListNode(0)
+      let curr = dummyHead
+      let carry = 0
+      while (l1 || l2) {
+        let lVal = l1 && l1.val
+        let rVal = l2 && l2.val
+        let sum = lVal + rVal + carry
+        // 取模
+        carry = Math.floor(sum / 10)
+        curr.next = new ListNode(sum % 10)
+        curr = curr.next
+        l1 = l1 && l1.next
+        l2 = l2 && l2.next
+      }
+
+      if (carry > 0) {
+        curr.next = new ListNode(carry);
+      }
+      return dummyHead.next
+    };
+
+
+    var decodeString = function (s) {
+
+      const numberStack = []
+      const strStack = []
+      let numStr = ''
+      let chainStr = ''
+
+      for (let i = 0, len = s.length; i < len; i++) {
+        let ch = s.charAt(i)
+        if (!isNaN(ch)) {
+          numStr += ch
+        } else if (ch === '[') {
+          numberStack.push(numStr - 0)
+          strStack.push(chainStr)
+          chainStr = ''
+          numStr = ''
+        } else if (ch === ']') {
+          let number = numberStack.pop()
+          // 最后取出上一层[]内的字符加到res前面
+          chainStr = strStack.pop() + chainStr.repeat(number);
+        } else {
+          chainStr += ch
+        }
+      }
+      return chainStr
+    };
+    // console.log(decodeString("3[a2[c]]"))
+    // console.log(decodeString("3[a]2[b4[F]c]"))
+
+    // 最长子窜长度 方法1
+    var lengthOfLongestSubstring1 = function (s) {
+      const lastSeen = {}
+      let startIdx = 0
+      let longest = 0
+      for (let i = 0; i < s.length; i++) {
+        let char = s[i];
+        if (char in lastSeen) {
+          startIdx = Math.max(startIdx, lastSeen[char] + 1)
+        }
+        longest = Math.max(longest, i + 1 - startIdx)
+        lastSeen[char] = i
+      }
+
+      return longest
+    };
+    // console.log(lengthOfLongestSubstring1('abachsdvabcfbb'))
+
+    // 最长子窜长度 方法2
+    let lengthOfLongestSubstring2 = function (s) {
+      let left = 0;
+      let right = 0;
+      let set = new Set();
+      let maxSubstringLength = 0;
+
+      while (right < s.length) {
+        if (!set.has(s.charAt(right))) {
+          set.add(s.charAt(right));
+          maxSubstringLength = Math.max(maxSubstringLength, set.size);
+          right++;
+        } else {
+          set.delete(s.charAt(left));
+          left++;
+        }
+      }
+
+      return maxSubstringLength;
+    };
+    // console.log(lengthOfLongestSubstring2('abcabcbb'))
+    // console.log(lengthOfLongestSubstring2('abbc'))
+
+
+    function longestPlaindrome(s) {
+      if (s === null || s.length < 2) {
+        return s
+      }
+      let strLen = s.length
+      let maxLen = 1
+      let res = ''
+
+      const dp = []
+      for (let i = 0; i < s.length; i++) {
+        dp[i] = new Array();
+        for (let j = 0; j < s.length; j++) {
+          dp[i][j] = 0;
+        }
+      }
+      for (let r = 1; r < strLen; r++) {
+        for (let l = 0; l < r; l++) {
+          if (s.charAt(l) === s.charAt(r) && (r - l <= 2 || dp[l + 1][r - 1])) {
+            dp[l][r] = true
+            if (r - l + 1 > res.length) {
+              maxLen = r - l + 1
+              res = s.substring(l, r + 1)
+            }
+          }
+        }
+      }
+      return res === '' ? res.substring(0, 1) : res
+    }
+
+    // console.log(longestPlaindrome('bfdcabacdf'))
+    // console.log(longestPlaindrome('babad'))
+    // console.log(longestPlaindrome('ac'))
+
+
+    // 暴力解法
+    var checkSubarraySum1 = function (nums, k) {
+      for (let start = 0; start < nums.length - 1; start++) {
+        for (let end = start + 1; end < nums.length; end++) {
+          let sum = 0;
+          for (let i = start; i <= end; i++)
+            sum += nums[i];
+          if (sum == k || (k != 0 && sum % k == 0))
+            return true;
+        }
+      }
+      return false;
+    };
+    // console.log(checkSubarraySum1([23,2,4,6,7], 6))
+    var checkSubarraySum2 = function (nums, k) {
+      const sum = new Array(nums.length);
+      sum[0] = nums[0];
+      for (let i = 1; i < nums.length; i++)
+        sum[i] = sum[i - 1] + nums[i];
+      for (let start = 0; start < nums.length - 1; start++) {
+        for (let end = start + 1; end < nums.length; end++) {
+          let summ = sum[end] - sum[start] + nums[start];
+          if (summ == k || (k != 0 && summ % k == 0))
+            return true;
+        }
+      }
+      return false;
+    }
+    // console.log(checkSubarraySum2([23, 2, 4, 6, 7], 6))
+
+    /**
+     *So brilliant, learned a lot. Let me "visualize" @compton_scatter 's strategy:
+     *Running sum from first element to index i : sum_i. If we mod k, it will be some format like : sum_i = k * x + modk_1
+     *Running sum from first element to index j : sum_j. If we mod k, it will be some format like : sum_j = k * y + modk_2
+     *If they have the same mod, which is modk_1 == modk_2, subtracting these two running sum we get the difference sum_i - sum_j = (x - y) * k = constant * k, 
+     *and the difference is the sum of elements between index i and j, and the value is a multiple of k.
+     *
+     */
+    var checkSubarraySum3 = function (nums, k) {
+      const map = new Map()
+      map.set(0, -1)
+      let runningSum = 0;
+      for (let i = 0; i < nums.length; i++) {
+        runningSum += nums[i];
+        if (k != 0) runningSum %= k;
+        let prev = map.get(runningSum);
+        if (prev != null) {
+          if (i - prev > 1) return true;
+        } else map.set(runningSum, i);
+      }
+      return false;
+    }
+    // console.log(checkSubarraySum3([23, 2, 4, 6, 7], 6))
+
+    var isPalindrome = function (x) {
+      if (x < 0) {
+        return false
+      }
+      let reverseVal = 0
+      let originalVal = x
+      while (x !== 0) {
+        let positionVal = x % 10
+        reverseVal += positionVal * Math.pow(10, x.length - 1)
+        x = Math.floor(x / 10)
+      }
+      return reverseVal === originalVal
+    };
+    // console.log(isPalindrome(121))
+
+    function sum(number) {
+      let sumVal = 0
+      return reverseVal(number, sumVal)
+    }
+
+    function reverseVal(number, sumVal) {
+      if (number === 0) {
+        return sumVal
+      }
+      sumVal += number
+      reverseVal(number - 1, sumVal)
+      console.log('----->')
+      return sumVal
+    }
+
+    // console.log(sum(10))
+
+
+    class Automaton {
+      constructor() {
+        // 执行阶段，默认处于开始执行阶段
+        this.state = 'start';
+        // 正负符号，默认是正数
+        this.sign = 1;
+        // 数值，默认是0
+        this.answer = 0;
+        /*
+        关键点：
+        状态和执行阶段的对应表
+        含义如下：
+        [执行阶段, [空格, 正负, 数值, 其他]]
+        */
+        this.map = new Map([
+          ['start', ['start', 'signed', 'in_number', 'end']],
+          ['signed', ['end', 'end', 'in_number', 'end']],
+          ['in_number', ['end', 'end', 'in_number', 'end']],
+          ['end', ['end', 'end', 'end', 'end']]
+        ])
+      }
+
+      // 获取状态的索引
+      getIndex(char) {
+        if (char === ' ') {
+          // 空格判断
+          return 0;
+        } else if (char === '-' || char === '+') {
+          // 正负判断
+          return 1;
+        } else if (typeof Number(char) === 'number' && !isNaN(char)) {
+          // 数值判断
+          return 2;
+        } else {
+          // 其他情况
+          return 3;
+        }
+      }
+
+      /*
+      关键点：
+      字符转换执行函数
+      */
+      get(char) {
+        /*
+        易错点：
+        每次传入字符时，都要变更自动机的执行阶段
+        */
+        this.state = this.map.get(this.state)[this.getIndex(char)];
+
+        if (this.state === 'in_number') {
+          this.answer = this.answer * 10 + (char - 0);
+          this.answer = this.sign === 1 ? Math.min(this.answer, Math.pow(2, 31) - 1) : Math.min(this.answer, -Math
+            .pow(-2, 31));
+        } else if (this.state === 'signed') {
+          this.sign = char === '+' ? 1 : -1;
+        }
+      }
+    }
+
+    /**
+     * @param {string} str
+     * @return {number}
+     */
+    var myAtoi = function (str) {
+      const automaton = new Automaton();
+
+      for (let char of str) {
+        if (automaton.state === 'end') {
+          break
+        }
+        automaton.get(char);
+      }
+      return automaton.sign * automaton.answer;
+    };
+    // console.log(myAtoi('4.193 with words'))
+
+    var maxSubArray = function (nums) {
+      let maxVal = Number.MIN_VALUE
+      for (let i = 0, len = nums.length; i < len; i++) {
+        let sum = 0
+        for (let j = i, jLen = nums.length; j < jLen; j++) {
+          sum += nums[j]
+          maxVal = Math.max(sum, maxVal)
+        }
+      }
+      return maxVal
+    };
+    // console.log(maxSubArray([-1]))
+
+    let res = 0
+
+    function maxProduct(nums) {
+      if (nums.length === 1) {
+        return nums[0]
+      }
+      res = nums[0]
+
+      dfs(nums, 0, nums[0])
+      return res
+    }
+
+    function dfs(nums, i, value) {
+      if (i >= nums.length - 1) {
+        res = Math.max(res, value)
+        return
+      }
+      res = Math.max(res, value)
+      dfs(nums, i + 1, value * nums[i + 1])
+      // dfs(nums, i + 1, nums[i + 1])
+    }
+    // console.log(maxProduct([2, 3, 6, -2, 4, 8]))
+
+    var lengthOfLIS = function (nums) {
+      if (nums.length === 0) {
+        return 0
+      }
+      const dp = new Array(nums.length).fill(1)
+      for (let i = 1; i < nums.length; i++) {
+        for (let j = 0; j < i; j++) {
+          if (nums[i] > nums[j]) {
+            dp[i] = Math.max(dp[j] + 1, dp[i])
+          }
+        }
+      }
+      console.log(dp)
+      return Math.max.apply(null, dp)
+    };
+    // console.log(lengthOfLIS([1, 5, 4, 6, 7, 9, 0]))
+
+    var findNumberOfLIS = function (nums) {
+      let len = nums.length;
+      if (len <= 1) return len;
+      let length = new Array(len).fill(0),
+        counts = new Array(len).fill(1);
+      for (let j = 0; j < len; j++) {
+        for (let i = 0; i < j; i++) {
+          if (nums[i] < nums[j]) {
+            if (length[i] >= length[j]) {
+              length[j] = length[i] + 1;
+              counts[j] = counts[i];
+            } else if (length[i] + 1 === length[j]) {
+              counts[j] += counts[i]
+            }
+          }
+        }
+      }
+      let longest = 0,
+        ans = 0;
+      for (let i = 0; i < length.length; i++) {
+        longest = Math.max(longest, length[i]);
+      }
+      for (let j = 0; j < len; j++) {
+        if (length[j] === longest) {
+          ans += counts[j]
+        }
+      }
+      console.log(length, counts, longest)
+      return ans;
+    };
+    // console.log(findNumberOfLIS([1, 3, 5, 4, 7]))
+
+
+    var permute = function (nums) {
+      const list = []
+      permuteRecursive(list, nums, [])
+      console.log(list)
+      return list
+    };
+
+    function permuteRecursive(list, nums, trace) {}
+    // console.log(permute([1, 2, 3]))
+
+    function multiply(num1, num2) {
+      if ((num1 === '0') || (num2 === "0")) {
+        return "0";
+      }
+      const res = new Array(num1.length + num2.length).fill(0);
+      for (let i = num1.length - 1; i >= 0; i--) {
+        let n1 = num1.charAt(i) - 0;
+        for (let j = num2.length - 1; j >= 0; j--) {
+          let n2 = num2.charAt(j) - 0;
+          let sum = (res[i + j + 1] + n1 * n2);
+          res[i + j + 1] = sum % 10;
+          res[i + j] += Math.floor(sum / 10);
+        }
+      }
+
+      let result = '';
+      for (let i = 0; i < res.length; i++) {
+        if (i == 0 && res[i] == 0) continue;
+        result += res[i]
+      }
+      return result;
+    }
+    // console.log(multiply('123', '456'))
+    // 硬币找零 深度优先遍历
+    var coinChange = function (coins, amount) {
+      if (amount === 0) return 0;
+      let min = Infinity;
+      for (let coin of coins) {
+        if (coin <= amount) {
+          // console.table(amount, coin, amount - coin, min)
+          let tmp = coinChange(coins, amount - coin);
+          if (tmp !== -1) {
+            min = Math.min(min, tmp + 1);
+            console.table(min, tmp + 1)
+          }
+        }
+      }
+      return Number.isFinite(min) ? min : -1;
+    };
+    // console.log(coinChange([5, 1], 10))
+
+    // 硬币找零回溯缓存
+    var coinChange2 = function (coins, amount) {
+      return backTrack(coins, amount, new Array(amount + 1).fill(0))
+    }
+
+    function backTrack(coins, amount, cache) {
+      if (amount < 0) {
+        return -1
+      }
+      if (amount === 0) {
+        return 0
+      }
+      if (cache[amount - 1]) {
+        return cache[amount - 1]
+      }
+      let min = Math.pow(2, 31)
+      for (coin of coins) {
+        let res = backTrack(coins, amount - coin, cache)
+        if (res >= 0 && res < min) {
+          min = 1 + res
+        }
+      }
+      cache[amount - 1] = min === Math.pow(2, 31) ? -1 : min
+      return cache[amount - 1]
+    }
+    // console.log(coinChange2([1], 10))
+
+    function maxSum(nums) {
+      const dp = []
+      dp[0] = nums[0]
+      let maxVal = -Math.pow(2, 31)
+      for (let i = 1; i < nums.length; i++) {
+        dp[i] = Math.max(dp[i - 1] + nums[i], nums[i])
+        maxVal = Math.max(maxVal, dp[i])
+      }
+
+      return maxVal
+    }
+    console.log(maxSum([-3, 4, -1, 2, -6, 1, 4]))
+
+    const list = []
+    // 凑硬币的方式 需要的列表和最小值都在这里了
+    // 和39题一样 一个是zhen
+    var change = function (amount, coins) {
+      return backTrack(amount, coins, 0, [])
+    };
+
+    function backTrack(amount, coins, start, result) {
+      if (amount === 0) {
+        list.push([...result])
+        return 1
+      }
+      if (amount < 0) {
+        return 0
+      }
+      let count = 0
+      for (let i = start; i < coins.length; i++) {
+        if (amount >= coins[i]) {
+          result.push(coins[i])
+          count += backTrack(amount - coins[i], coins, i, result)
+          result.pop()
+        }
+      }
+      return count
+    }
+    console.log(change(5, [1, 2, 5]), list)
+
+    var change2 = function (amount, coins) {
+      const dp = new Array(amount + 1).fill(0)
+      dp[0] = 1
+      for (let i = 1; i <= amount; i++) {
+        for (let j = 0; j < coins.length; j++) {
+         dp[j] = dp[j] + dp[j - coins[i]]
+        }
+      }
+      return dp[amount]
+    };
+    console.log(change2(5, [1, 2, 5]))
+
+  </script>
 </body>
+
 </html>
